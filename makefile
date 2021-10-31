@@ -1,5 +1,5 @@
 install:
 	composer install
 
-start:
-	bin/gendiff
+lint:
+	composer exec --verbose phpcs src bin
