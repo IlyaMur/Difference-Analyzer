@@ -1,0 +1,34 @@
+#!/usr/bin/env php
+
+<?php
+
+use function Gendiff\Gendiff\genDiff;
+
+$global = __DIR__ . '/../../../autoload.php';
+
+if (file_exists($global)) {
+    require_once $global;
+} else {
+    require_once __DIR__ . '/../vendor/autoload.php';
+}
+
+$doc = <<<HELP
+Generate diff
+Usage:
+    gendiff (-h|--help)
+    gendiff (-v|--version)
+    gendiff [--format <fmt>] <firstFile> <secondFile>
+Options:
+    -h --help                     Show this screen
+    -v --version                  Show version
+    --format <fmt>                Report format [default: stylish]
+HELP;
+
+$args = Docopt::handle($doc, ['version' => 'Difference Generanor 1.0',]);
+
+$format = $args['--format'];
+
+$file1Path = realpath($args['<firstFile>']);
+$file2Path = realpath($args['<secondFile>']);
+
+genDiff($file1Path, $file2Path);
