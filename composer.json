@@ -1,0 +1,23 @@
+{
+    "name": "hexlet/code",
+    "autoload": {
+        "files": [
+            "src/Gendiff.php"
+        ],
+        "psr-4": {
+            "Hexlet\\Code\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ilya Mur",
+            "email": "ilyamur@hotmail.com"
+        }
+    ],
+    "bin": [
+        "bin/gendiff"
+    ],
+    "require": {
+        "docopt/docopt": "^1.0"
+    }
+}
