@@ -1,10 +1,12 @@
 <?php
 
-declare(strict_types=1);
+namespace Differ\Formatters\Json;
 
-namespace Differ\Formatters;
-
-function json(object $AST): string
+function generateDiff(mixed $diffData): string
 {
-    return json_encode($AST, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
+    $diffString = json_encode($diffData);
+    if ($diffString === false) {
+        throw new \Exception('error with formatting diff to json');
+    }
+    return $diffString;
 }

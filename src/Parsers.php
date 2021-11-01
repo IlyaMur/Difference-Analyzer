@@ -1,32 +1,18 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Differ\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parse(string $filePath): object
+function parseData(string $extension, mixed $data): mixed
 {
-    if (!file_exists($filePath)) {
-        throw new \Exception("Invalid filepath: {$filePath}");
-    }
-
-    $fileContent = file_get_contents($filePath);
-
-    if ($fileContent === false) {
-        throw new \Exception("Can't read file: {$filePath}");
-    }
-
-    $extension = pathinfo($filePath, PATHINFO_EXTENSION);
-
     switch ($extension) {
-        case "json":
-            return json_decode($fileContent, false, 512, JSON_THROW_ON_ERROR);
-        case "yml":
-        case "yaml":
-            return Yaml::parse($fileContent, Yaml::PARSE_OBJECT_FOR_MAP);
+        case 'json':
+            return json_decode($data);
+        case 'yml':
+        case 'yaml':
+            return Yaml::parse($data, Yaml::PARSE_OBJECT_FOR_MAP);
         default:
-            throw new \Exception("Format {$extension} not supported.");
+            throw new \Exception('unknown extension');
     }
 }

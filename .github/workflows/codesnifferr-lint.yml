@@ -1,30 +1,25 @@
-name: Lint and Test
+name: linttest
 
-on:
-  push:
-    branches: master
+on: push
 
 jobs:
-  lint_and_test:
+  run-linttest:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - name: Setup PHP
-        # https://github.com/shivammathur/setup-php
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.0'
       - name: Install
         run: make install
-      - name: Run linter
+      - name: run-linter
         run: make lint
-      - name: Test
-        run: make test-coverage
-      - name: Upload Coverage
+      - name: run-tests
+        uses: paambaati/codeclimate-action@v2.6.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-          ./cc-test-reporter after-build -t clover
+        with:
+          coverageCommand: make test-coverage
+          coverageLocations: ${{github.workplace}}/build/logs/clover.xml:clover
+          debug: true

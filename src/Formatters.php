@@ -1,18 +1,21 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Differ\Formatters;
 
-use const Differ\Differ\DEFAULT_FORMAT;
+use function Differ\Formatters\Stylish\generateDiff as getStylishDiff;
+use function Differ\Formatters\Plain\generateDiff as getPlainDiff;
+use function Differ\Formatters\Json\generateDiff as getJsonDiff;
 
-function format(object $AST, string $format = DEFAULT_FORMAT): string
+function getFormattedDiff(array $diffData, string $formatter): string
 {
-    $formats = [
-        'stylish' => fn($AST) => stylish($AST),
-        'plain' => fn($AST) => plain($AST),
-        'json' => fn($AST) => json($AST)
-    ];
-
-    return $formats[$format]($AST);
+    switch ($formatter) {
+        case "stylish":
+            return getStylishDiff($diffData);
+        case "plain":
+            return getPlainDiff($diffData);
+        case "json":
+            return getJsonDiff($diffData);
+        default:
+            throw new \Exception('unknown format');
+    }
 }

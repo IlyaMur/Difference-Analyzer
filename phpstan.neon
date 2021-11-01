@@ -1,6 +1,0 @@
-parameters:
-	checkMissingIterableValueType: false
-
-	phpstanFunctionalProgramming:
-		disallowThrow: false
-		disallowClasses: false

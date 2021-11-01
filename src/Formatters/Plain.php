@@ -1,59 +1,65 @@
 <?php
 
-declare(strict_types=1);
+namespace Differ\Formatters\Plain;
 
-namespace Differ\Formatters;
+use function Differ\Additional\getKeyNames;
+use function Differ\Additional\stringifyItem;
 
-use function Functional\flatten;
+use const Differ\TreeBuilder\ADDED;
+use const Differ\TreeBuilder\DELETED;
+use const Differ\TreeBuilder\MODIFIED;
+use const Differ\TreeBuilder\NESTED;
+use const Differ\TreeBuilder\NEWVALUENAME;
+use const Differ\TreeBuilder\STATUSNAME;
+use const Differ\TreeBuilder\UNCHANGED;
+use const Differ\TreeBuilder\VALUENAME;
 
-function toString(mixed $value): string
+function generateDiff(array $diffData): string
 {
-    if (is_bool($value) || is_null($value)) {
-        return json_encode($value, JSON_THROW_ON_ERROR);
-    }
-
-    if (is_object($value)) {
-        return "[complex value]";
-    }
-
-    if (is_string($value)) {
-        return "'{$value}'";
-    }
-
-    return (string) $value;
+    return rtrim(generateNodeDiff($diffData, ''));
 }
 
-function plain(object $AST): string
+function generateNodeDiff(array $currentData, string $path): string
 {
-    $iter = function (object $AST, string $path) use (&$iter): array {
+    $value = getValue(VALUENAME, $currentData);
+    $valueAdd = getValue(NEWVALUENAME, $currentData);
+    $status = $currentData[STATUSNAME];
+    switch ($status) {
+        case MODIFIED:
+            return "Property '{$path}' was updated. From {$value} to {$valueAdd}" . PHP_EOL;
+        case DELETED:
+            return "Property '{$path}' was removed" . PHP_EOL;
+        case ADDED:
+            return "Property '{$path}' was added with value: {$valueAdd}" . PHP_EOL;
+        case NESTED:
+            return generateDiffForObject($currentData, $path, '');
+        case UNCHANGED:
+            return '';
+        default:
+            throw new \Exception('unknown status - ' . $status);
+    }
+}
 
-        return array_map(function ($node) use ($iter, $path): array|string {
-            [
-                'type' => $type,
-                'key' => $key,
-                'oldValue' => $oldValue,
-                'newValue' => $newValue
-            ] = (array) $node;
-
-            $newPath = (strlen($path) > 1) ? implode('.', [$path, $key]) : $key;
-
-            switch ($type) {
-                case 'added':
-                    return "Property '{$newPath}' was added with value: " . toString($newValue);
-                case 'removed':
-                    return "Property '{$newPath}' was removed";
-                case 'unchanged':
-                    return [];
-                case 'changed':
-                    return "Property '{$newPath}' was updated. From " .
-                    toString($oldValue) . " to " . toString($newValue);
-                case 'children':
-                    return $iter($oldValue, $newPath);
-                default:
-                    throw new \Exception("Type {$type} not supported");
+function generateDiffForObject(array $currentData, string $path, string $line): string
+{
+    return array_reduce(
+        array_keys($currentData),
+        function ($accLine, $itemName) use ($currentData, $path) {
+            $keyNames = getKeyNames();
+            if (in_array($itemName, $keyNames, true)) {
+                return $accLine;
             }
-        }, (array) $AST);
-    };
+            $newPath = $path === '' ? $itemName : "{$path}.{$itemName}";
+            return $accLine . generateNodeDiff($currentData[$itemName], $newPath);
+        },
+        $line
+    );
+}
 
-    return implode("\n", array_filter(flatten([$iter($AST, '')])));
+function getValue(string $valueName, array $currentData): string
+{
+    $value = array_key_exists($valueName, $currentData) ? $currentData[$valueName] : '[complex value]';
+    $stringifiedValue = stringifyItem($value);
+    $valueFin = (is_string($value) && $value !== '[complex value]') ? "'{$stringifiedValue}'" : "{$stringifiedValue}";
+    return $valueFin;
 }
