@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1635729237">
-  <project timestamp="1635729237">
+<coverage generated="1635730071">
+  <project timestamp="1635730071">
     <file name="/Users/ilyamuratov/Desktop/project2/php-project-lvl2/src/Gendiff.php">
       <line num="13" type="stmt" count="1"/>
       <line num="14" type="stmt" count="1"/>
