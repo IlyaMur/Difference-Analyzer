@@ -1,45 +1,42 @@
 <?php
 
-namespace Differ\Differ\Tests;
+namespace  Differ\Differ\Tests;
+
+use PHPUnit\Framework\TestCase;
 
 use function Differ\Differ\genDiff;
 
-class DifferTest extends \PHPUnit\Framework\TestCase
+class DifferTest extends TestCase
 {
-    private $expectedAnswer1;
-    private $expectedAnswer2;
-    private $expectedAnswer3;
-    private $expectedAnswer4;
-
-
-    /**
-     * @dataProvider dataProvider
-     */
-    public function testDiffer($file1, $file2, $formatter, $expected)
+    public function addDataProvider()
     {
-        $fixturesDir = __DIR__ . '/fixtures/';
-        $filePath1 = $fixturesDir . $file1;
-        $filePath2 = $fixturesDir . $file2;
-        $actualAnswer = ($formatter === null) ? genDiff($filePath1, $filePath2) : genDiff($filePath1, $filePath2, $formatter);
-        $this->assertEquals($expected, $actualAnswer);
+        return [
+            ['before.json', 'after.json', 'stylish', 'diffStylish'],
+            ['before.yml', 'after.yml', 'stylish', 'diffStylish'],
+            ['before.json', 'after.json', 'plain', 'diffPlain'],
+            ['before.yml', 'after.yml', 'plain', 'diffPlain'],
+            ['before.json', 'after.json', 'json', 'diffJson'],
+            ['before.yml', 'after.yml', 'json', 'diffJson']
+        ];
     }
 
-    public function dataProvider()
-    {
-        $expectedAnswer1 = file_get_contents(__DIR__ . '/fixtures/expectedSimple.txt');
-        $expectedAnswer2 = file_get_contents(__DIR__ . '/fixtures/expectedComplex.txt');
-        $expectedAnswer3 = file_get_contents(__DIR__ . '/fixtures/expectedComplexPlain.txt');
-        $expectedAnswer4 = json_encode(json_decode(file_get_contents(__DIR__ . '/fixtures/expectedComplexJson.txt')));
-        $expectedAnswer5 = file_get_contents(__DIR__ . '/fixtures/expectedComplex1.txt');
+    /**
+     * @dataProvider addDataProvider
+     */
 
-        return [
-            'simpleJsonDefault' => ['file1.json', 'file2.json', null, $expectedAnswer1],
-            'complexJsonDefault' => ['complexFile1.json', 'complexFile2.json', null, $expectedAnswer2],
-            'complexJsonPlain' => ['complexFile1.json', 'complexFile2.json', 'plain', $expectedAnswer3],
-            'complexJsonJson' => ['complexFile1.json', 'complexFile2.json', 'json', $expectedAnswer4],
-            'simpleYamlStylish' => ['file1.yml', 'file2.yml', 'stylish', $expectedAnswer1],
-            'complexYamlStylish' => ['complexFile1.yml', 'complexFile2.yaml', 'stylish', $expectedAnswer2],
-            'complex1JsonDefault' => ['complex1File1.json', 'complex1File2.json', null, $expectedAnswer5]
-        ];
+    public function testGenDiff($nameBefore, $nameAfter, $format, $nameResult)
+    {
+        $pathToFile1 = $this->genPath($nameBefore);
+        $pathToFile2 = $this->genPath($nameAfter);
+        $pathToExpected = $this->genPath($nameResult);
+        $actual = genDiff($pathToFile1, $pathToFile2, $format);
+        $expected = file_get_contents($pathToExpected);
+        $this->assertEquals($expected, $actual);
+    }
+
+    private function genPath($baseName)
+    {
+        $dir = '__fixtures__';
+        return "./tests/{$dir}/{$baseName}";
     }
 }

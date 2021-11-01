@@ -1,103 +1,65 @@
 <?php
 
-namespace Differ\Formatters\Stylish;
+namespace  Differ\Formatters\Stylish;
 
-use function Differ\Additional\getKeyNames;
-use function Differ\Additional\stringifyItem;
+use function Differ\Tree\getType;
+use function Differ\Tree\getName;
+use function Differ\Tree\getOldValue;
+use function Differ\Tree\getNewValue;
+use function Differ\Tree\getChildren;
+use function Differ\Preparation\boolToString;
+use function Funct\Collection\flattenAll;
 
-use const Differ\TreeBuilder\ADDED;
-use const Differ\TreeBuilder\DELETED;
-use const Differ\TreeBuilder\MODIFIED;
-use const Differ\TreeBuilder\NESTED;
-use const Differ\TreeBuilder\NEWVALUENAME;
-use const Differ\TreeBuilder\STATUSNAME;
-use const Differ\TreeBuilder\UNCHANGED;
-use const Differ\TreeBuilder\VALUENAME;
-
-const STARTOFFSET = -2;
-
-function generateDiff(
-    array $diffData,
-    int $depth = STARTOFFSET,
-    string $lineName = '',
-    bool $fixChildrenStatus = false
-): string {
-    $status = $fixChildrenStatus ? UNCHANGED : $diffData[STATUSNAME];
-    switch ($status) {
-        case NESTED:
-        case UNCHANGED:
-            return generateDiffString($diffData, $depth, $fixChildrenStatus, " ", " ", " ", $lineName);
-        case ADDED:
-            return generateDiffString($diffData, $depth, true, "+", "+", "+", $lineName);
-        case DELETED:
-            return generateDiffString($diffData, $depth, true, "-", "-", "-", $lineName);
-        case MODIFIED:
-            $objectSign = (array_key_exists(VALUENAME, $diffData)) ? "+" : "-";
-            return generateDiffString($diffData, $depth, true, "-", "+", $objectSign, $lineName);
-        default:
-            throw new \Exception("unknown status {$status}");
-    }
-}
-
-function generateDiffString(
-    array $current,
-    int $depth,
-    bool $fixChildrenStatus,
-    string $lineSign,
-    string $lineAddSign,
-    string $objectSign,
-    string $lineName
-): string {
-    $lineStartOld = "{$lineSign} {$lineName}";
-    $lineStartNew = "{$lineAddSign} {$lineName}";
-    $lineStartObject = "{$objectSign} {$lineName}";
-    $valueLineOld = getValueLine($current, $lineStartOld, $depth, VALUENAME);
-    $valueLineNew = getValueLine($current, $lineStartNew, $depth, NEWVALUENAME);
-    $objectLine = getObjectLine($current, $depth, $fixChildrenStatus);
-    $object = $objectLine !== '';
-    [$lineStart, $lineEnd] = getBeginingEndingOfLine($object, $depth, $lineStartObject);
-    return $valueLineOld . $lineStart . $objectLine . $lineEnd . $valueLineNew;
-}
-
-function getValueLine(array $curent, string $lineStart, int $depth, string $valueName): string
+function iter($tree, $space)
 {
-    if (array_key_exists($valueName, $curent)) {
-        $stringifiedValue = stringifyItem($curent[$valueName]);
-        $lineVal = $stringifiedValue === '' ? '' : '' . $stringifiedValue;
-        $valueLine = str_repeat(' ', $depth) . $lineStart . ': ' . $lineVal . PHP_EOL;
-    } else {
-        $valueLine = '';
-    }
-    return $valueLine;
+    $addedSpace = '    ';
+    $result = array_reduce($tree, function ($res, $node) use ($space, $addedSpace) {
+        $type = getType($node);
+        $name = getName($node);
+        switch ($type) {
+            case 'added':
+                $newValue = getNewValue($node);
+                $res[] = $space . "  + {$name}: " . prepareValue($newValue, $space . $addedSpace);
+                break;
+            case 'removed':
+                $oldValue = getOldValue($node);
+                $res[] = $space . "  - {$name}: " . prepareValue($oldValue, $space . $addedSpace);
+                break;
+            case 'notChanged':
+                $newValue = getNewValue($node);
+                $res[] = $space . "    {$name}: " . prepareValue($newValue, $space . $addedSpace);
+                break;
+            case 'updated':
+                $oldValue = getOldValue($node);
+                $newValue = getNewValue($node);
+                $res[] = $space . "  - {$name}: " . prepareValue($oldValue, $space . $addedSpace);
+                $res[] = $space . "  + {$name}: " . prepareValue($newValue, $space . $addedSpace);
+                break;
+            case 'nested':
+                $children = getChildren($node);
+                $res[] = $space . "    {$name}: {";
+                $res[] = iter($children, $space . $addedSpace);
+                $res[] = $space . '    }';
+        };
+        return $res;
+    }, []);
+    return flattenAll($result);
 }
 
-function getObjectLine(array $curent, int $depth, bool $fixChildrenStatus): string
+function stylish($tree)
 {
-    return array_reduce(
-        array_keys($curent),
-        function ($accLine, $itemName) use ($curent, $depth, $fixChildrenStatus) {
-            $keyNames = getKeyNames();
-            if (in_array($itemName, $keyNames, true)) {
-                return $accLine;
-            }
-            $accLineUpdated = $accLine . generateDiff($curent[$itemName], $depth + 4, $itemName, $fixChildrenStatus);
-            return $accLineUpdated;
-        },
-        ''
-    );
+    $res = implode("\n", iter($tree, ''));
+    return "{\n" . $res . "\n}\n";
 }
 
-function getBeginingEndingOfLine(bool $object, int $depth, string $lineStartObject): array
+function prepareValue($value, $space = '')
 {
-    if ($object && $depth > STARTOFFSET) {
-        $lineStart = str_repeat(' ', $depth) . $lineStartObject . ': {' . PHP_EOL;
-        $lineEnd = str_repeat(' ', $depth + 2) . '}' . PHP_EOL;
-    } elseif ($depth > STARTOFFSET) {
-        $lineStart = '';
-        $lineEnd = '';
-    } else {
-        $lineStart = '{' . PHP_EOL;
-        $lineEnd = '}';
+    if (!is_object($value)) {
+        return boolToString($value);
     }
-    return [$lineStart, $lineEnd];
+    $arr = (array) ($value);
+    $res = implode('', array_map(function ($key, $value) use ($space) {
+        return "\n" . $space . "    {$key}: " . prepareValue($value, $space . '    ');
+    }, array_keys($arr), $arr));
+    return '{' . $res . "\n" . $space . '}';
 }

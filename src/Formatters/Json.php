@@ -1,12 +1,8 @@
 <?php
 
-namespace Differ\Formatters\Json;
+namespace  Differ\Formatters\Json;
 
-function generateDiff(mixed $diffData): string
+function json($tree)
 {
-    $diffString = json_encode($diffData);
-    if ($diffString === false) {
-        throw new \Exception('error with formatting diff to json');
-    }
-    return $diffString;
+    return json_encode($tree, JSON_PRETTY_PRINT);
 }

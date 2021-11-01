@@ -1,53 +1,32 @@
 <?php
 
-namespace Differ\Differ;
+namespace  Differ\Differ;
 
-use function Differ\Formatters\getFormattedDiff;
-use function Differ\Parsers\parseData;
-use function Differ\TreeBuilder\generateDiffOfTwoObjects;
+use function Differ\Parsers\parse;
+use function Differ\Builder\diffAsTree;
+use function Differ\Formatters\Stylish\stylish;
+use function Differ\Formatters\Plain\plain;
+use function Differ\Formatters\Json\json;
 
-function genDiff(string $pathToFile1, string $pathToFile2, string $formatter = "stylish"): string
+function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
 {
-    if ($pathToFile1 === '') {
-        throw new \Exception('no first file path');
-    }
-    if ($pathToFile2 === '') {
-        throw new \Exception('no second file path');
-    }
-    $data1 = getDataFromFile($pathToFile1);
-    $data2 = getDataFromFile($pathToFile2);
+    $data1 = getData($pathToFile1);
+    $data2 = getData($pathToFile2);
 
-    $diffData = generateDiffOfTwoObjects($data1, $data2);
-    $sortedDiffData = sortDiffArr($diffData);
-    return getFormattedDiff($sortedDiffData, $formatter);
+    $mapping = [
+        'stylish' =>
+        fn ($tree) => stylish($tree),
+        'plain' =>
+        fn ($tree) => plain($tree),
+        'json' =>
+        fn ($tree) => json($tree),
+    ];
+    return $mapping[$format](diffAsTree($data1, $data2));
 }
 
-function getDataFromFile(string $pathToFile): object
+function getData($pathToFile)
 {
-    $pathParts = pathinfo($pathToFile);
-    if (!array_key_exists('extension', $pathParts)) {
-        throw new \Exception("could not get file extension from {$pathToFile}");
-    }
-
-    $extension = $pathParts['extension'];
-    $fileContent = file_get_contents($pathToFile);
-    if ($fileContent === false) {
-        throw new \Exception("could not get file content from {$pathToFile}");
-    }
-    return parseData($extension, $fileContent);
-}
-
-function sortDiffArr(mixed $diffArr): mixed
-{
-    if (!is_array($diffArr)) {
-        return $diffArr;
-    }
-    $sortedCurArr = array_reduce(
-        array_keys($diffArr),
-        function ($acc, $itemName) use ($diffArr) {
-            return array_merge($acc, [$itemName => sortDiffArr($diffArr[$itemName])]);
-        },
-        []
-    );
-    return collect($sortedCurArr)->sortKeys()->all();
+    $type = pathinfo($pathToFile, PATHINFO_EXTENSION);
+    $rawData = file_get_contents($pathToFile);
+    return parse($rawData, $type);
 }

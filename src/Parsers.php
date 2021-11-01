@@ -1,18 +1,16 @@
 <?php
 
-namespace Differ\Parsers;
+namespace  Differ\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parseData(string $extension, mixed $data): mixed
+function parse($rawData, $type)
 {
-    switch ($extension) {
-        case 'json':
-            return json_decode($data);
-        case 'yml':
-        case 'yaml':
-            return Yaml::parse($data, Yaml::PARSE_OBJECT_FOR_MAP);
-        default:
-            throw new \Exception('unknown extension');
-    }
+    $mapping = [
+        'yml' =>
+            fn($rawData) => Yaml::parse($rawData, Yaml::PARSE_OBJECT_FOR_MAP),
+        'json' =>
+            fn($rawData) => json_decode($rawData),
+    ];
+    return $mapping[$type]($rawData);
 }
