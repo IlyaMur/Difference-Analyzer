@@ -3,7 +3,8 @@
     "autoload": {
         "files": [
             "src/Gendiff.php",
-            "src/Parser.php"
+            "src/Parser.php",
+            "src/NodeGenerator.php"
         ],
         "psr-4": {
             "Hexlet\\Code\\": "src/"

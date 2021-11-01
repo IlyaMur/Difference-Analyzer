@@ -3,12 +3,7 @@
 namespace Gendiff\Gendiff;
 
 use function Gendiff\Parser\parseData;
-
-const ADDED = 'added';
-const REMOVED = 'removed';
-const CHANGED = 'changed';
-const NOTCHANGED = 'notchanged';
-const NESTED = 'nested';
+use function Gendiff\NodeGenerator\genNode;
 
 function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'json'): string
 {
@@ -48,41 +43,30 @@ function getDiffTree(array $data1, array $data2): array
     return array_map(
         static function ($key) use ($data1, $data2) {
             if (!array_key_exists($key, $data1)) {
-                $diffType = ADDED;
+                $diffType = 'added';
                 $value1 = null;
                 $value2 = $data2[$key];
-                return getNode($key, $diffType, $value1, $value2);
+                return genNode($key, $diffType, $value1, $value2);
             }
 
             if (!array_key_exists($key, $data2)) {
-                $diffType = REMOVED;
+                $diffType = 'removed';
                 $value1 = $data1[$key];
                 $value2 = null;
-                return getNode($key, $diffType, $value1, $value2);
+                return genNode($key, $diffType, $value1, $value2);
             }
 
             $value1 = $data1[$key];
             $value2 = $data2[$key];
             if (is_array($value1) && is_array($value2)) {
-                $diffType = NESTED;
+                $diffType = 'nested';
                 $children = getDiffTree($value1, $value2);
-                return getNode($key, $diffType, $value1, $value2, $children);
+                return genNode($key, $diffType, $value1, $value2, $children);
             }
 
-            $diffType = ($value1 === $value2) ? NOTCHANGED : CHANGED;
-            return getNode($key, $diffType, $value1, $value2);
+            $diffType = ($value1 === $value2) ? 'notchanged' : 'changed';
+            return genNode($key, $diffType, $value1, $value2);
         },
         $unionKeys
     );
-}
-
-function getNode(string $key, string $diffType, $value1, $value2, ?array $children = null)
-{
-    return [
-        'key' => $key,
-        'diffType' => $diffType,
-        'value1' => $value1,
-        'value2' => $value2,
-        'children' => $children,
-    ];
 }
