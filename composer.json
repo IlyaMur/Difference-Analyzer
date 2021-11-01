@@ -1,11 +1,11 @@
 {
-    "name": "Difference-Analyzer",
+    "name": "ilyamur/difference-analyzer",
     "license": "MIT",
     "scripts": {
         "phpcs": "phpcs",
         "test": "phpunit tests"
     },
-    "description": "second project php hexlet",
+    "description": "print the difference between config files",
     "authors": [
         {
             "name": "Ilya Mur",
