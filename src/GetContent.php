@@ -19,7 +19,7 @@ function getContent(string $pathToFile): string
 
     $content = file_get_contents($pathToFile);
     if ($content === false) {
-        throw new \Exception("Can't read file $pathToFile");
+        throw new \Exception("Can't open $pathToFile");
     }
 
     return $content;

@@ -32,7 +32,7 @@ class GendiffTest extends TestCase
     {
         return [
             ['1.json', '2.json', 'result.json'],
-            // ['1.yml', '2.yml', 'result.json'],
+            ['1.yml', '2.yml', 'result.json'],
         ];
     }
 }
