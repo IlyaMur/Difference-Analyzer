@@ -4,6 +4,7 @@
         "files": [
             "src/Gendiff.php",
             "src/Parser.php",
+            "src/GetContent.php",
             "src/NodeGenerator.php"
         ],
         "psr-4": {

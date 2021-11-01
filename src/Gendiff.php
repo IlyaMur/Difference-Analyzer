@@ -2,8 +2,8 @@
 
 namespace Gendiff\Gendiff;
 
-use function Gendiff\Parser\parseData;
 use function Gendiff\NodeGenerator\genNode;
+use function Gendiff\GetContent\extractData;
 
 function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'json'): string
 {
@@ -13,27 +13,6 @@ function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'jso
     $diffTree = getDiffTree($file1Data, $file2Data);
 
     return json_encode($diffTree, JSON_PRETTY_PRINT);
-}
-
-function extractData(string $pathToFile): array
-{
-    $content = getContent($pathToFile);
-    $extension = pathinfo($pathToFile, PATHINFO_EXTENSION);
-    return parseData($content, $extension);
-}
-
-function getContent(string $pathToFile): string
-{
-    if (!file_exists($pathToFile)) {
-        throw new \Exception("File $pathToFile not found");
-    }
-
-    $content = file_get_contents($pathToFile);
-    if ($content === false) {
-        throw new \Exception("Can't read file $pathToFile");
-    }
-
-    return $content;
 }
 
 function getDiffTree(array $data1, array $data2): array
