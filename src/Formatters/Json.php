@@ -1,8 +1,10 @@
 <?php
 
-namespace  Differ\Formatters\Json;
+declare(strict_types=1);
 
-function json($tree)
+namespace Differ\Formatters;
+
+function json(object $AST): string
 {
-    return json_encode($tree, JSON_PRETTY_PRINT);
+    return json_encode($AST, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
 }

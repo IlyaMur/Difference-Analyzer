@@ -1,52 +1,59 @@
 <?php
 
-namespace  Differ\Formatters\Plain;
+declare(strict_types=1);
 
-use function Differ\Tree\getType;
-use function Differ\Tree\getName;
-use function Differ\Tree\getOldValue;
-use function Differ\Tree\getNewValue;
-use function Differ\Tree\getChildren;
-use function Differ\Preparation\boolToString;
-use function Funct\Collection\flattenAll;
+namespace Differ\Formatters;
 
-function iter($tree, $preName)
+use function Functional\flatten;
+
+function toString(mixed $value): string
 {
-    $result = array_reduce($tree, function ($res, $node) use ($preName) {
-        $type = getType($node);
-        $name = $preName . getName($node);
-        switch ($type) {
-            case 'added':
-                $newValue = prepareValue(getNewValue($node));
-                $res[] = "Property '{$name}' was {$type} with value: {$newValue}";
-                break;
-            case 'removed':
-                $res[] = "Property '{$name}' was {$type}";
-                break;
-            case 'notChanged':
-                break;
-            case 'updated':
-                $oldValue = prepareValue(getOldValue($node));
-                $newValue = prepareValue(getNewValue($node));
-                $res[] = "Property '{$name}' was {$type}. From {$oldValue} to {$newValue}";
-                break;
-            case 'nested':
-                $children = getChildren($node);
-                $res[] = iter($children, $name . '.');
-        };
-        return $res;
-    }, []);
-    return flattenAll($result);
+    if (is_bool($value) || is_null($value)) {
+        return json_encode($value, JSON_THROW_ON_ERROR);
+    }
+
+    if (is_object($value)) {
+        return "[complex value]";
+    }
+
+    if (is_string($value)) {
+        return "'{$value}'";
+    }
+
+    return (string) $value;
 }
 
-function plain($tree)
+function plain(object $AST): string
 {
-    return implode("\n", iter($tree, ''));
-}
+    $iter = function (object $AST, string $path) use (&$iter): array {
 
-function prepareValue($value)
-{
-    $preparedValue = is_string($value) ? "'{$value}'" : boolToString($value);
-    $preparedValue = is_object($preparedValue) ? '[complex value]' : $preparedValue;
-    return $preparedValue;
+        return array_map(function ($node) use ($iter, $path): array|string {
+            [
+                'type' => $type,
+                'key' => $key,
+                'oldValue' => $oldValue,
+                'newValue' => $newValue
+            ] = (array) $node;
+
+            $newPath = (strlen($path) > 1) ? implode('.', [$path, $key]) : $key;
+
+            switch ($type) {
+                case 'added':
+                    return "Property '{$newPath}' was added with value: " . toString($newValue);
+                case 'removed':
+                    return "Property '{$newPath}' was removed";
+                case 'unchanged':
+                    return [];
+                case 'changed':
+                    return "Property '{$newPath}' was updated. From " .
+                    toString($oldValue) . " to " . toString($newValue);
+                case 'children':
+                    return $iter($oldValue, $newPath);
+                default:
+                    throw new \Exception("Type {$type} not supported");
+            }
+        }, (array) $AST);
+    };
+
+    return implode("\n", array_filter(flatten([$iter($AST, '')])));
 }

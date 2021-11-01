@@ -1,65 +1,73 @@
 <?php
 
-namespace  Differ\Formatters\Stylish;
+declare(strict_types=1);
 
-use function Differ\Tree\getType;
-use function Differ\Tree\getName;
-use function Differ\Tree\getOldValue;
-use function Differ\Tree\getNewValue;
-use function Differ\Tree\getChildren;
-use function Differ\Preparation\boolToString;
-use function Funct\Collection\flattenAll;
+namespace Differ\Formatters;
 
-function iter($tree, $space)
+use function Functional\flatten;
+
+const INDENT_WIDTH = 4;
+
+function makeIndent(int $depth): string
 {
-    $addedSpace = '    ';
-    $result = array_reduce($tree, function ($res, $node) use ($space, $addedSpace) {
-        $type = getType($node);
-        $name = getName($node);
-        switch ($type) {
-            case 'added':
-                $newValue = getNewValue($node);
-                $res[] = $space . "  + {$name}: " . prepareValue($newValue, $space . $addedSpace);
-                break;
-            case 'removed':
-                $oldValue = getOldValue($node);
-                $res[] = $space . "  - {$name}: " . prepareValue($oldValue, $space . $addedSpace);
-                break;
-            case 'notChanged':
-                $newValue = getNewValue($node);
-                $res[] = $space . "    {$name}: " . prepareValue($newValue, $space . $addedSpace);
-                break;
-            case 'updated':
-                $oldValue = getOldValue($node);
-                $newValue = getNewValue($node);
-                $res[] = $space . "  - {$name}: " . prepareValue($oldValue, $space . $addedSpace);
-                $res[] = $space . "  + {$name}: " . prepareValue($newValue, $space . $addedSpace);
-                break;
-            case 'nested':
-                $children = getChildren($node);
-                $res[] = $space . "    {$name}: {";
-                $res[] = iter($children, $space . $addedSpace);
-                $res[] = $space . '    }';
-        };
-        return $res;
-    }, []);
-    return flattenAll($result);
+    return str_repeat(' ', INDENT_WIDTH * $depth);
 }
 
-function stylish($tree)
+function parseValue(mixed $value, int $depth): string
 {
-    $res = implode("\n", iter($tree, ''));
-    return "{\n" . $res . "\n}\n";
-}
-
-function prepareValue($value, $space = '')
-{
-    if (!is_object($value)) {
-        return boolToString($value);
+    if (is_bool($value) || is_null($value)) {
+        return json_encode($value, JSON_THROW_ON_ERROR);
     }
-    $arr = (array) ($value);
-    $res = implode('', array_map(function ($key, $value) use ($space) {
-        return "\n" . $space . "    {$key}: " . prepareValue($value, $space . '    ');
-    }, array_keys($arr), $arr));
-    return '{' . $res . "\n" . $space . '}';
+
+    if (is_object($value)) {
+        $indent = makeIndent($depth);
+
+        $leafs = array_map(function ($key) use ($value, $depth): string {
+            $doubleIndent = makeIndent($depth + 1);
+            return "{$doubleIndent}{$key}: " . parseValue($value->$key, $depth + 1);
+        }, array_keys((array) $value));
+
+        $branch = implode("\n", flatten($leafs));
+        return "{\n{$branch}\n{$indent}}";
+    }
+
+    return (string) $value;
+}
+
+function stylish(object $AST): string
+{
+    $iter = function (object $AST, int $depth) use (&$iter): array {
+        return array_map(function ($node) use ($iter, $depth): string {
+            [
+                'type' => $type,
+                'key' => $key,
+                'oldValue' => $oldValue,
+                'newValue' => $newValue
+            ] = (array) $node;
+
+            $indent = makeIndent($depth - 1);
+
+            switch ($type) {
+                case 'added':
+                    return "{$indent}  + {$node->key}: " . parseValue($newValue, $depth);
+                case 'removed':
+                    return "{$indent}  - {$node->key}: " . parseValue($oldValue, $depth);
+                case 'unchanged':
+                    return "{$indent}    {$key}: " . parseValue($oldValue, $depth);
+                case 'changed':
+                    $oldLine = "{$indent}  - {$key}: " . parseValue($oldValue, $depth);
+                    $newLine = "{$indent}  + {$key}: " . parseValue($newValue, $depth);
+                    return "{$oldLine}\n{$newLine}";
+                case 'children':
+                    return makeIndent($depth) .
+                        "{$key}: {\n" .
+                         implode("\n", flatten($iter($node->oldValue, $depth + 1))) .
+                         "\n" . makeIndent($depth) . "}";
+                default:
+                    throw new \Exception("Type {$type} not supported");
+            }
+        }, (array) $AST);
+    };
+
+    return implode("\n", flatten(['{', $iter($AST, 1), '}']));
 }
