@@ -7,19 +7,19 @@ use function Gendiff\NodeGenerator\genNode;
 
 function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'json'): string
 {
-    $content1 = getContent($pathToFile1);
-    $extension1 = pathinfo($pathToFile1, PATHINFO_EXTENSION);
-    $fileData1 = parseData($content1, $extension1);
+    $file1Data = extractData($pathToFile1);
+    $file2Data = extractData($pathToFile2);
 
-    $content2 = getContent($pathToFile2);
-    $extension2 = pathinfo($pathToFile2, PATHINFO_EXTENSION);
-    $fileData2 = parseData($content2, $extension2);
-
-    $diffTree = getDiffTree($fileData1, $fileData2);
-    // $render = render($format);
+    $diffTree = getDiffTree($file1Data, $file2Data);
 
     return json_encode($diffTree, JSON_PRETTY_PRINT);
-    // return $diffTree;
+}
+
+function extractData(string $pathToFile): array
+{
+    $content = getContent($pathToFile);
+    $extension = pathinfo($pathToFile, PATHINFO_EXTENSION);
+    return parseData($content, $extension);
 }
 
 function getContent(string $pathToFile): string
