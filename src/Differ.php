@@ -12,14 +12,14 @@ function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
 {
     $data1 = getData($pathToFile1);
     $data2 = getData($pathToFile2);
-        
+
     $mapping = [
         'stylish' =>
-            fn($tree) => stylish($tree),
+        fn ($tree) => stylish($tree),
         'plain' =>
-            fn($tree) => plain($tree),
+        fn ($tree) => plain($tree),
         'json' =>
-            fn($tree) => json($tree),
+        fn ($tree) => json($tree),
     ];
     return $mapping[$format](diffAsTree($data1, $data2));
 }
