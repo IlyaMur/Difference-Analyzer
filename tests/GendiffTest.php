@@ -5,7 +5,6 @@ namespace Gendiff\Tests;
 use PHPUnit\Framework\TestCase;
 
 use function Gendiff\Gendiff\genDiff;
-use function Gendiff\Gendiff\makeDiff;
 
 class GendiffTest extends TestCase
 {
@@ -35,6 +34,7 @@ class GendiffTest extends TestCase
     {
         return [
             ['1.json', '2.json', 'result.json'],
+            ['1.yml', '2.yml', 'result.json'],
         ];
     }
 }

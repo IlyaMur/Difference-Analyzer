@@ -2,7 +2,7 @@ install:
 	composer install
 
 lint:
-	composer exec --verbose phpcs src bin
+	composer exec phpcs -- --standard=PSR12 src bin tests
 
 test-coverage:
-		composer exec --verbose phpunit tests -- --coverage-clover build/logs/clover.xml
+	composer exec phpunit -- --coverage-clover build/logs/clover.xml

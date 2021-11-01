@@ -10,14 +10,13 @@ const NESTED = 'nested';
 
 function genDiff(string $pathToFile1, string $pathToFile2): string
 {
-    $content1 = readFile($pathToFile1);
+    $content1 = getContent($pathToFile1);
     $fileData1 = json_decode($content1, true, 512, JSON_THROW_ON_ERROR);
 
-    $content2 = readFile($pathToFile2);
+    $content2 = getContent($pathToFile2);
     $fileData2 = json_decode($content2, true, 512, JSON_THROW_ON_ERROR);
 
     $diffTree = getDiffTree($fileData1, $fileData2);
-
     return render($diffTree);
 }
 
@@ -26,7 +25,7 @@ function render(array $diffTree): string
     return json_encode($diffTree, JSON_PRETTY_PRINT);
 }
 
-function readFile(string $pathToFile): string
+function getContent(string $pathToFile): string
 {
     if (!file_exists($pathToFile)) {
         throw new \Exception("File $pathToFile not found");
