@@ -1,12 +1,18 @@
 {
     "name": "hexlet/code",
+    "description": "Compare two files and output difference.",
+    "keywords": ["hexlet"],
+    "license": "MIT",
+    "type": "project",
+
     "authors": [
         {
-            "name": "Ilya Muratov",
-            "email": "ilyamur@hotmail.com"
+          "name": "Ilya Mur",
+          "email": "ilyamur@hotmail.com"
         }
     ],
-        "bin": [
+
+    "bin": [
         "bin/gendiff"
     ],
 

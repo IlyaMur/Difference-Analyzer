@@ -15,8 +15,8 @@ class GenDiffTest extends TestCase
     public string|false $expectedJson;
 
     /**
-     * @dataProvider fileProvider
-     */
+    * @dataProvider fileProvider
+    */
     public function testFormatting(string $file1, string $file2, string $format, string $expected): void
     {
         $this->assertEquals($expected, genDiff($file1, $file2, $format));
@@ -31,13 +31,13 @@ class GenDiffTest extends TestCase
         // todo: вынести пути файлов для сокращения повторений
         return [
             'Test Stylish with two json files' =>
-            [FIXTURES_PATH . 'file1.json', FIXTURES_PATH . 'file2.json', 'stylish', $this->expectedStylish],
+                [FIXTURES_PATH . 'file1.json', FIXTURES_PATH . 'file2.json', 'stylish', $this->expectedStylish],
             'Test Stylish with two different file formats' =>
-            [FIXTURES_PATH . 'file1.json', FIXTURES_PATH . 'file2.yml', 'stylish', $this->expectedStylish],
+                [FIXTURES_PATH . 'file1.json', FIXTURES_PATH . 'file2.yml', 'stylish', $this->expectedStylish],
             'Test Json with two different file formats' =>
-            [FIXTURES_PATH . 'file1.yaml', FIXTURES_PATH . 'file2.json', 'json', $this->expectedJson],
+                [FIXTURES_PATH . 'file1.yaml', FIXTURES_PATH . 'file2.json', 'json', $this->expectedJson],
             'Test Plain with two different file formats' =>
-            [FIXTURES_PATH . 'file1.json', FIXTURES_PATH . 'file2.yml', 'plain', $this->expectedPlain],
+                [FIXTURES_PATH . 'file1.json', FIXTURES_PATH . 'file2.yml', 'plain', $this->expectedPlain],
         ];
     }
 }
