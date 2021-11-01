@@ -26,9 +26,10 @@ HELP;
 
 $args = Docopt::handle($doc, ['version' => 'Difference Generanor 1.0',]);
 
-$format = $args['--format'];
+$result = genDiff(
+    $args['<firstFile>'],
+    $args['<secondFile>'],
+    $args['--format']
+);
 
-$file1Path = realpath($args['<firstFile>']);
-$file2Path = realpath($args['<secondFile>']);
-
-genDiff($file1Path, $file2Path);
+print $result;

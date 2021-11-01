@@ -2,64 +2,86 @@
 
 namespace Gendiff\Gendiff;
 
-function parse($path)
+const ADDED = 'added';
+const REMOVED = 'removed';
+const CHANGED = 'changed';
+const NOTCHANGED = 'notchanged';
+const NESTED = 'nested';
+
+function genDiff(string $pathToFile1, string $pathToFile2): string
 {
-    if (!file_exists($path)) {
-        throw new \Exception("Invalid file path: {$path}");
+    $content1 = readFile($pathToFile1);
+    $fileData1 = json_decode($content1, true, 512, JSON_THROW_ON_ERROR);
+
+    $content2 = readFile($pathToFile2);
+    $fileData2 = json_decode($content2, true, 512, JSON_THROW_ON_ERROR);
+
+    $diffTree = getDiffTree($fileData1, $fileData2);
+
+    return render($diffTree);
+}
+
+function render(array $diffTree): string
+{
+    return json_encode($diffTree, JSON_PRETTY_PRINT);
+}
+
+function readFile(string $pathToFile): string
+{
+    if (!file_exists($pathToFile)) {
+        throw new \Exception("File $pathToFile not found");
     }
 
-    $content = file_get_contents($path);
-
+    $content = file_get_contents($pathToFile);
     if ($content === false) {
-        throw new \Exception("Can't read file: {$path}");
+        throw new \Exception("Can't read file $pathToFile");
     }
 
-    return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+    return $content;
 }
 
-function buildNode($typeNode, $key, $oldValue, $newValue, $children = null)
+function getDiffTree(array $data1, array $data2): array
 {
-    $node = [
-        'typeNode' => $typeNode,
-        'key' => $key,
-        'oldValue' => $oldValue,
-        'newValue' => $newValue,
-        'children' => $children
-    ];
-    return $node;
-}
-
-function genDiff(string $firstFilePath, string $secondFilePath, $format = "stylish")
-{
-    $firstArray = parse($firstFilePath);
-    $secondArray = parse($secondFilePath);
-    $diff = makeDiff($firstArray, $secondArray);
-    print_r($diff);
-}
-
-function makeDiff(array $before, array $after)
-{
-    $unionKeys = array_unique(array_merge(array_keys($before), array_keys($after)));
-    sort($unionKeys);
+    $unionKeys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
 
     return array_map(
-        function ($key) use ($before, $after) {
-            if (array_key_exists($key, $before) && array_key_exists($key, $after)) {
-                if (is_array($before[$key]) && is_array($after[$key])) {
-                    $node =  buildNode('nested', $key, null, null, makeDiff($before[$key], $after[$key]));
-                } elseif ($before[$key] === $after[$key]) {
-                    $node = buildNode("unchanged", $key, $before[$key], $after[$key]);
-                } else {
-                    $node = buildNode("changed", $key, $before[$key], $after[$key]);
-                }
+        static function ($key) use ($data1, $data2) {
+            if (!array_key_exists($key, $data1)) {
+                $diffType = ADDED;
+                $value1 = null;
+                $value2 = $data2[$key];
+                return getNode($key, $diffType, $value1, $value2);
             }
-            if (array_key_exists($key, $before) && !array_key_exists($key, $after)) {
-                $node = buildNode("removed", $key, $before[$key], null);
+
+            if (!array_key_exists($key, $data2)) {
+                $diffType = REMOVED;
+                $value1 = $data1[$key];
+                $value2 = null;
+                return getNode($key, $diffType, $value1, $value2);
             }
-            if (!array_key_exists($key, $before) && array_key_exists($key, $after)) {
-                $node = buildNode("added", $key, null, $after[$key]);
+
+            $value1 = $data1[$key];
+            $value2 = $data2[$key];
+            if (is_array($value1) && is_array($value2)) {
+                $diffType = NESTED;
+                $children = getDiffTree($value1, $value2);
+                return getNode($key, $diffType, $value1, $value2, $children);
             }
-            return $node;
-        }, $unionKeys
+
+            $diffType = ($value1 === $value2) ? NOTCHANGED : CHANGED;
+            return getNode($key, $diffType, $value1, $value2);
+        },
+        $unionKeys
     );
+}
+
+function getNode(string $key, string $diffType, $value1, $value2, ?array $children = null)
+{
+    return [
+        'key' => $key,
+        'diffType' => $diffType,
+        'value1' => $value1,
+        'value2' => $value2,
+        'children' => $children,
+    ];
 }
