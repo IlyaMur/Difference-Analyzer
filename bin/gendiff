@@ -12,17 +12,18 @@ if (file_exists($autoloadPath1)) {
     require_once $autoloadPath2;
 }
 
-$doc = <<<MSG
+$doc = <<<'DOCOPT'
 Generate diff
 Usage:
-    gendiff (-h|--help)
-    gendiff (-v|--version)
-    gendiff [--format <fmt>] <firstFile> <secondFile>
+  gendiff (-h|--help)
+  gendiff (-v|--version)
+  gendiff [--format <fmt>] <firstFile> <secondFile>
 Options:
-    -h --help                     Show this screen
-    -v --version                  Show version
-    --format <fmt>                Report format [default: stylish]
-MSG;
+  -h --help                     Show this screen
+  -v --version                  Show version
+  --format <fmt>                Report format [default: stylish]
+  
+DOCOPT;
 
 $result = \Docopt::handle($doc, array('version' => '1.0.0'));
 

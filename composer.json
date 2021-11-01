@@ -2,10 +2,14 @@
     "name": "hexlet/code",
     "autoload": {
         "files": [
-            "src/Gendiff.php",
-            "src/Parser.php",
-            "src/GetContent.php",
-            "src/NodeGenerator.php"
+            "src/Differ.php",
+            "src/Parsers.php",
+            "src/Tree.php",
+            "src/Builder.php",
+            "src/Formatters/Stylish.php",
+            "src/Formatters/Plain.php",
+            "src/Formatters/Json.php",
+            "src/Preparation.php"
         ],
         "psr-4": {
             "Hexlet\\Code\\": "src/"
