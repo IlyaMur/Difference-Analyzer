@@ -1,18 +1,18 @@
 install:
-	composer install
+	composer.phar install
 
 console:
-	composer exec --verbose psysh
+	composer.phar exec --verbose psysh
 
 lint:
-	composer exec --verbose phpcs -- --standard=PSR12 bin src tests
-	composer exec --verbose phpstan -- --level=8 analyse bin src tests
+	composer.phar exec --verbose phpcs -- --standard=PSR12 bin src tests
+	composer.phar exec --verbose phpstan -- --level=8 analyse bin src tests
 
 lint-fix:
-	composer exec --verbose phpcbf -- --standard=PSR12 src tests
+	composer.phar exec --verbose phpcbf -- --standard=PSR12 src tests
 
 test:
-	composer exec --verbose phpunit tests
+	composer.phar exec --verbose phpunit tests
 
 test-coverage:
-	composer exec --verbose phpunit tests -- --coverage-clover build/logs/clover.xml
+	composer.phar exec --verbose phpunit tests -- --coverage-clover build/logs/clover.xml
