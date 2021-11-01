@@ -1,5 +1,5 @@
 {
-    "name": "difference analyzer",
+    "name": "Difference-Analyzer",
     "license": "MIT",
     "scripts": {
         "phpcs": "phpcs",
