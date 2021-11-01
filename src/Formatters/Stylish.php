@@ -61,8 +61,8 @@ function stylish(object $AST): string
                 case 'children':
                     return makeIndent($depth) .
                         "{$key}: {\n" .
-                         implode("\n", flatten($iter($node->oldValue, $depth + 1))) .
-                         "\n" . makeIndent($depth) . "}";
+                        implode("\n", flatten($iter($node->oldValue, $depth + 1))) .
+                        "\n" . makeIndent($depth) . "}";
                 default:
                     throw new \Exception("Type {$type} not supported");
             }

@@ -1,30 +1,30 @@
-name: codesniffer-lint
-on: push
+name: Lint and Test
+
+on:
+  push:
+    branches: master
+
 jobs:
-  build:
-    # The type of machine to run the job on
+  lint_and_test:
     runs-on: ubuntu-latest
+
     steps:
-      # Check-out repository under GitHub workspace
-      # https://github.com/actions/checkout
       - uses: actions/checkout@v2
-        # Step's name
       - name: Setup PHP
-        # Action gives to setup the PHP environment to test application
         # https://github.com/shivammathur/setup-php
         uses: shivammathur/setup-php@v2
         with:
-          # Specify the PHP version
-          php-version: '8.0'
+          php-version: '7.4'
       - name: Install
         run: make install
       - name: Run linter
         run: make lint
-      - name: Run test and publish code coverage
-        uses: paambaati/codeclimate-action@v2.6.0
+      - name: Test
+        run: make test-with-coverage
+      - name: Upload Coverage
         env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageCommand: make test-coverage
-          coverageLocations: ${{github.workplace}}/build/logs/clover.xml:clover
-          debug: true
+          CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter after-build -t clover
