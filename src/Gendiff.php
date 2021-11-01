@@ -2,27 +2,29 @@
 
 namespace Gendiff\Gendiff;
 
+use function Gendiff\Parser\parseData;
+
 const ADDED = 'added';
 const REMOVED = 'removed';
 const CHANGED = 'changed';
 const NOTCHANGED = 'notchanged';
 const NESTED = 'nested';
 
-function genDiff(string $pathToFile1, string $pathToFile2): string
+function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'json'): string
 {
     $content1 = getContent($pathToFile1);
-    $fileData1 = json_decode($content1, true, 512, JSON_THROW_ON_ERROR);
+    $extension1 = pathinfo($pathToFile1, PATHINFO_EXTENSION);
+    $fileData1 = parseData($content1, $extension1);
 
     $content2 = getContent($pathToFile2);
-    $fileData2 = json_decode($content2, true, 512, JSON_THROW_ON_ERROR);
+    $extension2 = pathinfo($pathToFile2, PATHINFO_EXTENSION);
+    $fileData2 = parseData($content2, $extension2);
 
     $diffTree = getDiffTree($fileData1, $fileData2);
-    return render($diffTree);
-}
+    // $render = render($format);
 
-function render(array $diffTree): string
-{
     return json_encode($diffTree, JSON_PRETTY_PRINT);
+    // return $diffTree;
 }
 
 function getContent(string $pathToFile): string

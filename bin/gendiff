@@ -32,4 +32,4 @@ $result = genDiff(
     $args['--format']
 );
 
-print $result;
+print_r($result);

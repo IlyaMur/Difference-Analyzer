@@ -2,7 +2,8 @@
     "name": "hexlet/code",
     "autoload": {
         "files": [
-            "src/Gendiff.php"
+            "src/Gendiff.php",
+            "src/Parser.php"
         ],
         "psr-4": {
             "Hexlet\\Code\\": "src/"

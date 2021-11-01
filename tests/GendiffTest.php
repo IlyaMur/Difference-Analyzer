@@ -19,8 +19,6 @@ class GendiffTest extends TestCase
 
         $result = genDiff($file1path, $file2path);
         $expected = trim(file_get_contents($resultPath));
-        // echo '123';
-        // var_dump($expected);
 
         $this->assertEquals($result, $expected);
     }
@@ -34,7 +32,7 @@ class GendiffTest extends TestCase
     {
         return [
             ['1.json', '2.json', 'result.json'],
-            ['1.yml', '2.yml', 'result.json'],
+            // ['1.yml', '2.yml', 'result.json'],
         ];
     }
 }
