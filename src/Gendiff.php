@@ -5,7 +5,7 @@ namespace Gendiff\Gendiff;
 use function Gendiff\NodeGenerator\genNode;
 use function Gendiff\GetContent\extractData;
 
-function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'json'): string
+function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'stylish'): string
 {
     $file1Data = extractData($pathToFile1);
     $file2Data = extractData($pathToFile2);

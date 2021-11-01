@@ -2,17 +2,17 @@
 
 <?php
 
-use function Gendiff\Gendiff\genDiff;
+use function Differ\Differ\genDiff;
 
-$global = __DIR__ . '/../../../autoload.php';
-
-if (file_exists($global)) {
-    require_once $global;
+$autoloadPath1 = __DIR__ . '/../../../autoload.php';
+$autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
+if (file_exists($autoloadPath1)) {
+    require_once $autoloadPath1;
 } else {
-    require_once __DIR__ . '/../vendor/autoload.php';
+    require_once $autoloadPath2;
 }
 
-$doc = <<<HELP
+$doc = <<<MSG
 Generate diff
 Usage:
     gendiff (-h|--help)
@@ -22,14 +22,12 @@ Options:
     -h --help                     Show this screen
     -v --version                  Show version
     --format <fmt>                Report format [default: stylish]
-HELP;
+MSG;
 
-$args = Docopt::handle($doc, ['version' => 'Difference Generanor 1.0',]);
+$result = \Docopt::handle($doc, array('version' => '1.0.0'));
 
-$result = genDiff(
-    $args['<firstFile>'],
-    $args['<secondFile>'],
-    $args['--format']
-);
+$path1 = realpath($result["<firstFile>"]);
+$path2 = realpath($result["<secondFile>"]);
+$format = $result["--format"];
 
-print_r($result);
+print_r(genDiff($path1, $path2, $format));

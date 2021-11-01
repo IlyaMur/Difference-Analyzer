@@ -11,7 +11,7 @@ class GendiffTest extends TestCase
     /**
      * @dataProvider fixturesFilenames
      */
-    public function testMakeDiff(string $file1name, string $file2name, string $resultName): void
+    public function testGenDiff(string $file1name, string $file2name, string $resultName): void
     {
         $file1path = $this->getFixturePath($file1name);
         $file2path = $this->getFixturePath($file2name);
