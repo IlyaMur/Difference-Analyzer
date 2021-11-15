@@ -12,7 +12,7 @@
 Генерация отчетов json, plain, stylish
 ```
 
-## Пример использования:
+## Пример использования
 
     $ gendiff [--format <fmt>] <pathToFile1> <pathTofile2>
 
@@ -26,7 +26,7 @@
 Для установки зависимостей:  
 `$ make install`  
 Проверка линтером:  
-`$ make install`  
+`$ make lint`  
 Проверка запуск тестов с выводом покрытия:  
 `$ make test`
 
@@ -35,7 +35,7 @@
 - PHP >=7.0
 - Composer
 
-#### Использованные библиотеки:
+#### Использованные библиотеки
 
 - docopt/docopt
 - symfony/yaml
