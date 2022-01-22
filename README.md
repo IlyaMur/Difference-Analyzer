@@ -3,7 +3,6 @@
 #### О приложении
 
 Утилита командной строки для поиска отличий в конфигурационных файлах.
-Выполнена на PHP 8.0
 
 Возможности утилиты:
 
@@ -21,7 +20,7 @@
     $ gendiff -h
     $ gendiff --help
 
-#### Установка
+## Установка
 
 Для установки зависимостей:  
 `$ make install`  
@@ -41,16 +40,13 @@
 - symfony/yaml
 - funct/funct
 
-### Как работает пакет
+## Как работает приложение
 
-#### Сравнение файлов json и yaml/yml в формате по умолчанию stylish
+#### Сравнение файлов json в форматах stylish, plain и json.
 
-[![asciicast](https://asciinema.org/a/394025.svg)](https://asciinema.org/a/394025)
+[![asciicast](https://asciinema.org/a/Ca2ALuRhfVDVPO2AklPH3Wuwd.svg)](https://asciinema.org/a/Ca2ALuRhfVDVPO2AklPH3Wuwd)
 
-#### Сравнение файлов json/yaml в формате plain
+#### Сравнение файлов yaml в форматах stylish, plain и json.
 
-[![asciicast](https://asciinema.org/a/392103.svg)](https://asciinema.org/a/392103)
+[![asciicast](https://asciinema.org/a/3hcI9bVJgJEubTg36md5AsEnE.svg)](https://asciinema.org/a/3hcI9bVJgJEubTg36md5AsEnE)
 
-#### Сравнение файлов json/yaml в формате json
-
-[![asciicast](https://asciinema.org/a/392109.svg)](https://asciinema.org/a/392109)

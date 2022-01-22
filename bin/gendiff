@@ -4,13 +4,7 @@
 
 use function Differ\Differ\genDiff;
 
-$autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
-$autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
-if (file_exists($autoloadPath1)) {
-  require_once $autoloadPath1;
-} else {
-  require_once $autoloadPath2;
-}
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $doc = <<<MSG
 Generate diff
@@ -31,6 +25,11 @@ $result = \Docopt::handle($doc, array('difference analyzer' => '1.0.0'));
 
 $path1 = realpath($result["<firstFile>"]);
 $path2 = realpath($result["<secondFile>"]);
+
+if (empty($path1) || empty($path2)) {
+  exit("Please specify the files location");
+}
+
 $format = $result["--format"];
 
 print_r(genDiff($path1, $path2, $format));

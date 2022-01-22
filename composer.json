@@ -6,12 +6,10 @@
         "test": "phpunit tests"
     },
     "description": "print the difference between config files",
-    "authors": [
-        {
-            "name": "Ilya Mur",
-            "email": "ilyamur@hotmail.com"
-        }
-    ],
+    "authors": [{
+        "name": "Ilya Muratov",
+        "email": "ilyamur@hotmail.com"
+    }],
     "bin": ["bin/gendiff"],
     "autoload": {
         "files": [
@@ -28,7 +26,8 @@
     "require": {
         "docopt/docopt": "^1.0",
         "symfony/yaml": "^5.1",
-        "funct/funct": "^1.5"               
+        "funct/funct": "^1.5",
+        "php": "8.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.1.3",
