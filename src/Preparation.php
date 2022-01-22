@@ -1,6 +1,6 @@
 <?php
 
-namespace  Differ\Preparation;
+namespace  Ilyamur\DifferAnalyzer\Preparation;
 
 function boolToString($value)
 {

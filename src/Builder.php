@@ -1,9 +1,9 @@
 <?php
 
-namespace  Differ\Builder;
+namespace  Ilyamur\DifferAnalyzer\Builder;
 
-use function Differ\Tree\makeNode;
-use function Differ\Tree\makeNestedNode;
+use function Ilyamur\DifferAnalyzer\Tree\makeNode;
+use function Ilyamur\DifferAnalyzer\Tree\makeNestedNode;
 
 function diffAsTree($data1, $data2)
 {

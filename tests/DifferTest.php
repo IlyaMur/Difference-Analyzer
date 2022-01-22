@@ -1,10 +1,9 @@
 <?php
 
-namespace  Differ\Differ\Tests;
+namespace  Ilyamur\DifferAnalyzer\Tests;
 
 use PHPUnit\Framework\TestCase;
-
-use function Differ\Differ\genDiff;
+use function Ilyamur\DifferAnalyzer\genDiff;
 
 class DifferTest extends TestCase
 {

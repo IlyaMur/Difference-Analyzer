@@ -1,13 +1,13 @@
 <?php
 
-namespace  Differ\Formatters\Plain;
+namespace  Ilyamur\DifferAnalyzer\Formatters\Plain;
 
-use function Differ\Tree\getType;
-use function Differ\Tree\getName;
-use function Differ\Tree\getOldValue;
-use function Differ\Tree\getNewValue;
-use function Differ\Tree\getChildren;
-use function Differ\Preparation\boolToString;
+use function Ilyamur\DifferAnalyzer\Tree\getType;
+use function Ilyamur\DifferAnalyzer\Tree\getName;
+use function Ilyamur\DifferAnalyzer\Tree\getOldValue;
+use function Ilyamur\DifferAnalyzer\Tree\getNewValue;
+use function Ilyamur\DifferAnalyzer\Tree\getChildren;
+use function Ilyamur\DifferAnalyzer\Preparation\boolToString;
 use function Funct\Collection\flattenAll;
 
 function iter($tree, $preName)

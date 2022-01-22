@@ -1,6 +1,6 @@
 <?php
 
-namespace  Differ\Formatters\Json;
+namespace  Ilyamur\DifferAnalyzer\Formatters\Json;
 
 function json($tree)
 {

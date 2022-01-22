@@ -1,12 +1,12 @@
 <?php
 
-namespace  Differ\Differ;
+namespace  Ilyamur\DifferAnalyzer;
 
-use function Differ\Parsers\parse;
-use function Differ\Builder\diffAsTree;
-use function Differ\Formatters\Stylish\stylish;
-use function Differ\Formatters\Plain\plain;
-use function Differ\Formatters\Json\json;
+use function Ilyamur\DifferAnalyzer\Parsers\parse;
+use function Ilyamur\DifferAnalyzer\Builder\diffAsTree;
+use function Ilyamur\DifferAnalyzer\Formatters\Stylish\stylish;
+use function Ilyamur\DifferAnalyzer\Formatters\Plain\plain;
+use function Ilyamur\DifferAnalyzer\Formatters\Json\json;
 
 function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
 {
