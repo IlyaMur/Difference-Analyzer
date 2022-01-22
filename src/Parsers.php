@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace  Ilyamur\DifferenceAnalyzer\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parse($rawData, $type)
+function parse(string $rawData, string $type): \stdClass
 {
     $mapping = [
         'yml' =>

@@ -1,17 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace  Ilyamur\DifferenceAnalyzer\Builder;
 
 use function Ilyamur\DifferenceAnalyzer\Tree\makeNode;
 use function Ilyamur\DifferenceAnalyzer\Tree\makeNestedNode;
 
-function diffAsTree($data1, $data2)
+function diffAsTree(\stdClass $data1, \stdClass $data2): array
 {
     $data1 = (array) $data1;
     $data2 = (array) $data2;
+
     $keys = array_keys(array_merge($data1, $data2));
+
     sort($keys);
-    return array_map(function ($key) use ($data1, $data2) {
+
+    return array_map(function (string $key) use ($data1, $data2) {
         if (!array_key_exists($key, $data1)) {
             return makeNode($key, 'added', null, $data2[$key]);
         };

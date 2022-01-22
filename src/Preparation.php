@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace  Ilyamur\DifferenceAnalyzer\Preparation;
 
-function boolToString($value)
+function boolToString(mixed $value): mixed
 {
     if (is_bool($value)) {
-        if ($value === true) {
-            return 'true';
-        }
-        return 'false';
+        return $value === true ? 'true' : 'false';
     }
+
     return $value;
 }

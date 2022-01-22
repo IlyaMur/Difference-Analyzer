@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace  Ilyamur\DifferenceAnalyzer\Formatters\Plain;
+
+use stdClass;
 
 use function Ilyamur\DifferenceAnalyzer\Tree\getType;
 use function Ilyamur\DifferenceAnalyzer\Tree\getName;
@@ -10,9 +14,9 @@ use function Ilyamur\DifferenceAnalyzer\Tree\getChildren;
 use function Ilyamur\DifferenceAnalyzer\Preparation\boolToString;
 use function Funct\Collection\flattenAll;
 
-function iter($tree, $preName)
+function iter(array $tree, string $preName): array
 {
-    $result = array_reduce($tree, function ($res, $node) use ($preName) {
+    $result = array_reduce($tree, function (array $res, array $node) use ($preName) {
         $type = getType($node);
         $name = $preName . getName($node);
         switch ($type) {
@@ -39,12 +43,12 @@ function iter($tree, $preName)
     return flattenAll($result);
 }
 
-function plain($tree)
+function plain(array $tree): string
 {
     return implode("\n", iter($tree, ''));
 }
 
-function prepareValue($value)
+function prepareValue(mixed $value): string
 {
     $preparedValue = is_string($value) ? "'{$value}'" : boolToString($value);
     $preparedValue = is_object($preparedValue) ? '[complex value]' : $preparedValue;

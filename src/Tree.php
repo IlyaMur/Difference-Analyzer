@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace  Ilyamur\DifferenceAnalyzer\Tree;
 
 function makeNode(string $name, string $type, $oldValue, $newValue)
@@ -12,7 +14,7 @@ function makeNode(string $name, string $type, $oldValue, $newValue)
     ];
 }
 
-function makeNestedNode(string $name, string $type, $children)
+function makeNestedNode(string $name, string $type, array $children)
 {
     return [
         "name" => $name,
@@ -21,27 +23,27 @@ function makeNestedNode(string $name, string $type, $children)
     ];
 }
 
-function getName($node)
+function getName(array $node): string
 {
     return $node['name'];
 }
 
-function getType($node)
+function getType(array $node): string
 {
     return $node['type'];
 }
 
-function getOldValue($node)
+function getOldValue(array $node): mixed
 {
     return $node['oldValue'];
 }
 
-function getNewValue($node)
+function getNewValue(array $node): mixed
 {
     return $node['newValue'];
 }
 
-function getChildren($node)
+function getChildren($node): array
 {
     return $node['children'];
 }

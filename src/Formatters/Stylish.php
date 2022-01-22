@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace  Ilyamur\DifferenceAnalyzer\Formatters\Stylish;
 
 use function Ilyamur\DifferenceAnalyzer\Tree\getType;
@@ -10,10 +12,10 @@ use function Ilyamur\DifferenceAnalyzer\Tree\getChildren;
 use function Ilyamur\DifferenceAnalyzer\Preparation\boolToString;
 use function Funct\Collection\flattenAll;
 
-function iter($tree, $space)
+function iter(array $tree, string $space): array
 {
     $addedSpace = '    ';
-    $result = array_reduce($tree, function ($res, $node) use ($space, $addedSpace) {
+    $result = array_reduce($tree, function (array $res, array $node) use ($space, $addedSpace) {
         $type = getType($node);
         $name = getName($node);
         switch ($type) {
@@ -46,13 +48,13 @@ function iter($tree, $space)
     return flattenAll($result);
 }
 
-function stylish($tree)
+function stylish(array $tree): string
 {
     $res = implode("\n", iter($tree, ''));
     return "{\n" . $res . "\n}\n";
 }
 
-function prepareValue($value, $space = '')
+function prepareValue(mixed $value, string $space = ''): int|string
 {
     if (!is_object($value)) {
         return boolToString($value);
