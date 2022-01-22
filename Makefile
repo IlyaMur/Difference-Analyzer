@@ -3,7 +3,7 @@ install:
 console:
 	composer exec --verbose psysh
 lint:
-	composer run-script phpcs -- --standard=PSR12 src tests
+	composer exec phpcs -- --standard=PSR12 src tests
 test:
 	composer exec --verbose phpunit tests
 test-coverage:
