@@ -3,6 +3,7 @@
 namespace  Ilyamur\DifferAnalyzer\Tests;
 
 use PHPUnit\Framework\TestCase;
+
 use function Ilyamur\DifferAnalyzer\genDiff;
 
 class DifferTest extends TestCase
