@@ -1,6 +1,6 @@
 <?php
 
-namespace  Ilyamur\DifferAnalyzer\Tree;
+namespace  Ilyamur\DifferenceAnalyzer\Tree;
 
 function makeNode(string $name, string $type, $oldValue, $newValue)
 {

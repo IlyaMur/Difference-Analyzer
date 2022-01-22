@@ -1,8 +1,7 @@
 #!/usr/bin/env php
 <?php
-error_reporting(E_ALL ^ E_DEPRECATED);
 
-use function Ilyamur\DifferAnalyzer\genDiff;
+use function Ilyamur\DifferenceAnalyzer\genDiff;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

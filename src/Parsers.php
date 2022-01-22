@@ -1,6 +1,6 @@
 <?php
 
-namespace  Ilyamur\DifferAnalyzer\Parsers;
+namespace  Ilyamur\DifferenceAnalyzer\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
 

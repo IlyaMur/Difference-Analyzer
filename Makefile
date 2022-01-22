@@ -1,7 +1,5 @@
 install:
 	composer install
-console:
-	composer exec --verbose psysh
 lint:
 	composer exec phpcs -- --standard=PSR12 src tests
 test:
