@@ -1,10 +1,6 @@
 {
     "name": "ilyamur/difference-analyzer",
     "license": "MIT",
-    "scripts": {
-        "phpcs": "phpcs",
-        "test": "phpunit tests"
-    },
     "description": "print the difference between config files",
     "authors": [{
         "name": "Ilya Muratov",
