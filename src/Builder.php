@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace  Ilyamur\DifferenceAnalyzer\Builder;
 
-use function Ilyamur\DifferenceAnalyzer\Tree\makeNode;
-use function Ilyamur\DifferenceAnalyzer\Tree\makeNestedNode;
+use function Ilyamur\DifferenceAnalyzer\Tree\{makeNode, makeNestedNode};
 
 /**
  * Builder
