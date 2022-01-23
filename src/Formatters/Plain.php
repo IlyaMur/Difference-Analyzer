@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace  Ilyamur\DifferenceAnalyzer\Formatters\Plain;
 
-use function Ilyamur\DifferenceAnalyzer\Tree\getType;
-use function Ilyamur\DifferenceAnalyzer\Tree\getName;
-use function Ilyamur\DifferenceAnalyzer\Tree\getOldValue;
-use function Ilyamur\DifferenceAnalyzer\Tree\getNewValue;
-use function Ilyamur\DifferenceAnalyzer\Tree\getChildren;
+use function Ilyamur\DifferenceAnalyzer\Tree\{
+    getType,
+    getName,
+    getOldValue,
+    getNewValue,
+    getChildren
+};
 use function Ilyamur\DifferenceAnalyzer\Preparation\boolToString;
 use function Funct\Collection\flattenAll;
 

@@ -11,7 +11,6 @@ namespace  Ilyamur\DifferenceAnalyzer\Formatters\Json;
  *
  */
 
-
 /**
  * Encoding the difference to JSON format
  *

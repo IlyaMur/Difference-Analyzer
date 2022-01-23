@@ -6,9 +6,7 @@ namespace  Ilyamur\DifferenceAnalyzer;
 
 use function Ilyamur\DifferenceAnalyzer\Parsers\parse;
 use function Ilyamur\DifferenceAnalyzer\Builder\diffAsTree;
-use function Ilyamur\DifferenceAnalyzer\Formatters\Stylish\stylish;
-use function Ilyamur\DifferenceAnalyzer\Formatters\Plain\plain;
-use function Ilyamur\DifferenceAnalyzer\Formatters\Json\json;
+use function Ilyamur\DifferenceAnalyzer\Formatters\{Stylish\stylish, Plain\plain, Json\json};
 
 /**
  * Differ
@@ -16,7 +14,6 @@ use function Ilyamur\DifferenceAnalyzer\Formatters\Json\json;
  * Checking input args and deciding what type of output user needed
  *
  */
-
 
 /**
  * Selecting a format handler depending on choosen format
