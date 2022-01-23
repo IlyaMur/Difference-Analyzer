@@ -50,7 +50,7 @@ function makeNestedNode(string $name, string $type, array $children): array
 }
 
 /**
- * Get node name
+ * Get a node's name
  *
  * @param array $node Node
  *
@@ -62,7 +62,7 @@ function getName(array $node): string
 }
 
 /**
- * Get node type
+ * Get a node's type
  *
  * @param array $node Type
  *
@@ -74,7 +74,7 @@ function getType(array $node): string
 }
 
 /**
- * Get node old value
+ * Get a node's old value
  *
  * @param array $node Node
  *
@@ -86,7 +86,7 @@ function getOldValue(array $node): mixed
 }
 
 /**
- * Get node new value
+ * Get a node's new value
  *
  * @param array $node Node
  *
@@ -98,7 +98,7 @@ function getNewValue(array $node): mixed
 }
 
 /**
- * Get node's children
+ * Get a node's children
  *
  * @param array $node Node
  *
