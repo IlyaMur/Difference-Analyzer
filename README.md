@@ -5,65 +5,66 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/6edf6b009909fff44632/maintainability)](https://codeclimate.com/github/IlyaMur/php-project-lvl2/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/6edf6b009909fff44632/test_coverage)](https://codeclimate.com/github/IlyaMur/php-project-lvl2/test_coverage) 
 
-**Table of contents**
-  - [Overview](#overview)
-    - [Features](#features)
-  - [Install](#install)
-    - [Used libraries](#used-libraries)
-  - [How To Use](#how-to-use)
-  - [How It Works](#how-it-works)
+**Содержание**
+  - [О приложении](#о-приложении)
+    - [Особенности](#особенности)
+  - [Установка](#установка)
+    - [Использованные библиотеки](#использованные-библиотеки)
+  - [Как использовать](#как-использовать)
+  - [Пример работы](#пример-работы)
 
-### Overview
-The CLI utility for checking the difference between two configuration files.  
-Different types of output supported.  
-Written in PHP.
+### О приложении
+CLI-утилита для проверки разницы между двумя конфигурационными файлами.  
+Поддерживаются различные форматы вывода (stylish, json, plain text).  
+Приложение написано на PHP.
 
-#### Features
+#### Особенности
 
 ```
-Formats support: json, yaml
-Reports generation: json, plain, stylish
+Поддерживаемые форматы: json, yaml
+Форматы отчётов: json, plain, stylish
 ```
-### Install
+### Установка
 
 - PHP >= 7.0
 - Composer
 
-For install:  
+Для установки зависимостей:  
 
     $ make install  
 
-For linter checking:  
+Для проверки линтером:  
 
     $ make lint 
 
-For tests with coverage:  
+Вывод тестов с покрытием:  
 
     $ make test-coverage
 
-#### Used libraries
+#### Использованные библиотеки
+
 - docopt/docopt
 - symfony/yaml
 - funct/funct
 
-### How To Use
+### Как использовать
 
-For generate the difference:  
+Для генерации отчета по различиям:  
 
     $ gendiff [--format <fmt>] <pathToFile1> <pathTofile2>
 
-For help:
+Вывод помощи:
 
     $ gendiff -h
     $ gendiff --help
 
-### How It Works
+### Пример работы
 
-Comparsion of two json files with output formats: stylish, plain и json.
+Сравнение двух json-файлов и вывод разницы в форматах: stylish, plain и json.
 
 [![asciicast](https://asciinema.org/a/Ca2ALuRhfVDVPO2AklPH3Wuwd.svg)](https://asciinema.org/a/Ca2ALuRhfVDVPO2AklPH3Wuwd)
 
-Comparsion of two yaml/yml files with output formats: stylish, plain и json.
+Сравнение двух yaml/yml-файлов и вывод разницы в форматах: stylish, plain и json.
 
 [![asciicast](https://asciinema.org/a/3hcI9bVJgJEubTg36md5AsEnE.svg)](https://asciinema.org/a/3hcI9bVJgJEubTg36md5AsEnE)
 
