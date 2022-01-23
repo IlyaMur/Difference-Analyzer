@@ -28,7 +28,7 @@ Reports generation: json, plain, stylish
 ```
 ### Install
 
-- PHP >= 7.0
+- PHP >= 8.0
 - Composer
 
 For install:  
