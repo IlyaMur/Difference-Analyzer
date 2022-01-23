@@ -4,7 +4,24 @@ declare(strict_types=1);
 
 namespace  Ilyamur\DifferenceAnalyzer\Tree;
 
-function makeNode(string $name, string $type, $oldValue, $newValue)
+/**
+ * Tree
+ *
+ * Nodes formatting
+ *
+ */
+
+/**
+ * Creating a node
+ *
+ * @param string $name Name
+ * @param string $type Data type
+ * @param mixed $oldValue Old value
+ * @param mixed $newValue New value
+ *
+ * @return mixed
+ */
+function makeNode(string $name, string $type, mixed $oldValue, mixed $newValue)
 {
     return [
         "name" => $name,
@@ -14,7 +31,16 @@ function makeNode(string $name, string $type, $oldValue, $newValue)
     ];
 }
 
-function makeNestedNode(string $name, string $type, array $children)
+/**
+ * Creating a nested node
+ *
+ * @param string $name Name
+ * @param string $type Data type
+ * @param array $children Nested node
+ *
+ * @return array
+ */
+function makeNestedNode(string $name, string $type, array $children): array
 {
     return [
         "name" => $name,
@@ -23,26 +49,61 @@ function makeNestedNode(string $name, string $type, array $children)
     ];
 }
 
+/**
+ * Get node name
+ *
+ * @param array $node Node
+ *
+ * @return string
+ */
 function getName(array $node): string
 {
     return $node['name'];
 }
 
+/**
+ * Get node type
+ *
+ * @param array $node Type
+ *
+ * @return string
+ */
 function getType(array $node): string
 {
     return $node['type'];
 }
 
+/**
+ * Get node old value
+ *
+ * @param array $node Node
+ *
+ * @return mixed
+ */
 function getOldValue(array $node): mixed
 {
     return $node['oldValue'];
 }
 
+/**
+ * Get node new value
+ *
+ * @param array $node Node
+ *
+ * @return mixed
+ */
 function getNewValue(array $node): mixed
 {
     return $node['newValue'];
 }
 
+/**
+ * Get node children
+ *
+ * @param array $node Node
+ *
+ * @return array
+ */
 function getChildren($node): array
 {
     return $node['children'];

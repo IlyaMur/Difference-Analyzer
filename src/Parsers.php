@@ -6,6 +6,21 @@ namespace  Ilyamur\DifferenceAnalyzer\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Parsers
+ *
+ * Parsing files content
+ *
+ */
+
+/**
+ * Parse provided data
+ *
+ * @param string $rawData File data
+ * @param string $type File extension
+ *
+ * @return \stdClass
+ */
 function parse(string $rawData, string $type): \stdClass
 {
     $mapping = [

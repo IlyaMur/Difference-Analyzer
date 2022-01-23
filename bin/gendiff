@@ -5,8 +5,17 @@ declare(strict_types=1);
 
 use function Ilyamur\DifferenceAnalyzer\genDiff;
 
+/**
+ * Difference analyzer
+ *
+ * @author Ilya Muratov ilyamur@hotmail.com
+ * 
+ * PHP version 8.0
+ */
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
+// Heredoc for printing out help information
 $doc = <<<MSG
 Generate diff
 
@@ -33,4 +42,5 @@ if (empty($path1) || empty($path2)) {
 
 $format = $result["--format"];
 
+// Printing the result
 print_r(genDiff($path1, $path2, $format));
