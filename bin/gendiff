@@ -31,7 +31,7 @@ Options:
   
 MSG;
 
-$result = \Docopt::handle($doc, array('difference analyzer' => '1.0.0'));
+$result = \Docopt::handle($doc, ['difference analyzer' => '1.0.0']);
 
 $path1 = realpath($result["<firstFile>"]);
 $path2 = realpath($result["<secondFile>"]);

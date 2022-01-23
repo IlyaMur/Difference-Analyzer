@@ -17,12 +17,12 @@ use function Funct\Collection\flattenAll;
 /**
  * Stylish
  *
- * Preparing final result in 'stylish' format (default)
+ * Preparing the result in 'stylish' format (default)
  *
  */
 
 /**
- * Iterating provided array and formating text output depending on file difference
+ * Iterating over an array and formating text output depending on file difference
  *
  * @param array $tree Tree
  * @param string $space String for spacing

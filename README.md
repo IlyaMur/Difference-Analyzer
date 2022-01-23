@@ -53,7 +53,7 @@ CLI-утилита для проверки разницы между двумя 
 
 Для генерации отчета по различиям:  
 
-    $ gendiff [--format <fmt>] <pathToFile1> <pathTofile2>
+    $ ./gendiff [--format <fmt>] <pathToFile1> <pathTofile2>
 
 Вывод помощи:
 

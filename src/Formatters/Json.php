@@ -7,7 +7,7 @@ namespace  Ilyamur\DifferenceAnalyzer\Formatters\Json;
 /**
  * JSON
  *
- * Preparing difference result as JSON
+ * Preparing the result as JSON
  *
  */
 

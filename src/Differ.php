@@ -16,7 +16,7 @@ use function Ilyamur\DifferenceAnalyzer\Formatters\{Stylish\stylish, Plain\plain
  */
 
 /**
- * Selecting a format handler depending on choosen format
+ * Selecting a format handler depending on a format
  *
  * @param string $pathToFile1 Data from first file
  * @param string $pathToFile2 Data from second file

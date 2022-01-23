@@ -98,7 +98,7 @@ function getNewValue(array $node): mixed
 }
 
 /**
- * Get node children
+ * Get node's children
  *
  * @param array $node Node
  *

@@ -52,7 +52,7 @@ For tests with coverage:
 
 For generate the difference:  
 
-    $ gendiff [--format <fmt>] <pathToFile1> <pathTofile2>
+    $ ./gendiff [--format <fmt>] <pathToFile1> <pathTofile2>
 
 For help:
 

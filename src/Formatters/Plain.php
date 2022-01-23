@@ -17,12 +17,12 @@ use function Funct\Collection\flattenAll;
 /**
  * Plain
  *
- * Preparing final result as a plain text
+ * Preparing the result as a plain text
  *
  */
 
 /**
- * Iterating provided array and formating text output depending on the file difference
+ * Iterating over an array and formating a text output depending on the file difference
  *
  * @param array $tree Tree
  * @param string $preName Prefix
@@ -65,7 +65,7 @@ function iter(array $tree, string $preName): array
 }
 
 /**
- * Preparing plain text output
+ * Preparing an output as a plain text
  *
  * @param array $tree Tree
  *

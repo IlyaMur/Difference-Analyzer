@@ -14,7 +14,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 
 /**
- * Parse provided data
+ * Parsing provided data
  *
  * @param string $rawData File data
  * @param string $type File extension
