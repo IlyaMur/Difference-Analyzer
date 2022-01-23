@@ -5,6 +5,8 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/6edf6b009909fff44632/maintainability)](https://codeclimate.com/github/IlyaMur/php-project-lvl2/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/6edf6b009909fff44632/test_coverage)](https://codeclimate.com/github/IlyaMur/php-project-lvl2/test_coverage) 
 
+**[🇬🇧 ENGLISH readme](https://github.com/IlyaMur/difference_analyzer/blob/master/README_en.md)**
+
 **Содержание**
   - [О приложении](#о-приложении)
     - [Особенности](#особенности)
