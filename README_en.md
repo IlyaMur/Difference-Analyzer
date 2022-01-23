@@ -5,7 +5,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/6edf6b009909fff44632/maintainability)](https://codeclimate.com/github/IlyaMur/php-project-lvl2/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/6edf6b009909fff44632/test_coverage)](https://codeclimate.com/github/IlyaMur/php-project-lvl2/test_coverage) 
 
-**[🇷🇺 RUSSIAN readme](https://github.com/IlyaMur/difference_analyzer/blob/master/README.md)**
+**[🇷🇺 Russian readme](https://github.com/IlyaMur/difference_analyzer/blob/master/README.md)**
 
 **Table of contents**
   - [Overview](#overview)
@@ -61,11 +61,11 @@ For help:
 
 ### How It Works
 
-Comparsion of two json files with output formats: stylish, plain и json.
+Comparsion of two json files with output formats: stylish, plain and json.
 
 [![asciicast](https://asciinema.org/a/Ca2ALuRhfVDVPO2AklPH3Wuwd.svg)](https://asciinema.org/a/Ca2ALuRhfVDVPO2AklPH3Wuwd)
 
-Comparsion of two yaml/yml files with output formats: stylish, plain и json.
+Comparsion of two yaml/yml files with output formats: stylish, plain and json.
 
 [![asciicast](https://asciinema.org/a/3hcI9bVJgJEubTg36md5AsEnE.svg)](https://asciinema.org/a/3hcI9bVJgJEubTg36md5AsEnE)
 
